@@ -14,9 +14,6 @@ namespace ng {
         using const_reference = const T &;
 
     public:
-        static Matrix matrix_empty;
-
-    public:
         Matrix() = default;
         Matrix(size_type rows, size_type cols, value_type fill = value_type {});
         Matrix(size_type square, value_type fill = value_type {});

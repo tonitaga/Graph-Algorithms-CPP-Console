@@ -13,7 +13,6 @@ add_executable(GraphAlgorithms
         src/Graph/include/matrix.h
         src/Graph/source/file_manager.cc
         src/Graph/source/graph.cc
-        src/Graph/source/matrix.cc
         src/GraphAlgorithms/include/graph_algorithms.h
         src/GraphAlgorithms/source/graph_algorithms.cc
         main.cc)

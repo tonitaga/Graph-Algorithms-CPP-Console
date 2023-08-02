@@ -7,6 +7,13 @@
 #include "file_manager.h"
 
 namespace ng {
+    enum class GraphType : int {
+        kEmptyGraph,
+        kDirectedGraph,
+        kUndirectedGraph,
+        kMultiGraph
+    };
+
     template <typename T>
     class Graph final {
         static_assert(std::is_fundamental<T>::value, "Template parameter T must be fundamental");
@@ -23,6 +30,7 @@ namespace ng {
         bool isEmpty() const noexcept;
         size_type getVertexesCount() const noexcept;
         size_type getEdgesCount() const;
+        GraphType getGraphType() const { return graph_type_; }
 
         const_reference operator()(size_type from, size_type to) const;
 
@@ -31,8 +39,10 @@ namespace ng {
         size_type edges_count_ {};
         value_type default_value_ {};
 
+        GraphType graph_type_;
+
     private:
-        size_type CountEdges() const;
+        void CountEdgesAndGraphType();
     };
 
 
@@ -45,14 +55,14 @@ namespace ng {
     Graph<T>::Graph(const Matrix<value_type> &adjacency_matrix)
         : adjacency_matrix_(adjacency_matrix)
     {
-        edges_count_ = CountEdges();
+        CountEdgesAndGraphType();
     }
 
     template<typename T>
     Graph<T>::Graph(std::string_view path)
         : adjacency_matrix_(FileManager::ReadMatrixFromFile<value_type>(path))
     {
-        edges_count_ = CountEdges();
+        CountEdgesAndGraphType();
     }
 
     template <typename T>
@@ -76,28 +86,36 @@ namespace ng {
     }
 
     template <typename T>
-    typename Graph<T>::size_type Graph<T>::CountEdges() const {
-        size_type edges_count {};
-
+    void Graph<T>::CountEdgesAndGraphType() {
+        bool is_directed = true, is_undirected = true;
         for (size_type from = 0, size = getVertexesCount(); from != size; ++from) {
             for (size_type to = from; to != size; ++to) {
                 if (from == to and adjacency_matrix_(from, to) != default_value_) {
-                    ++edges_count;
+                    ++edges_count_;
                 } else if (adjacency_matrix_(from, to) != default_value_ and
                            adjacency_matrix_(to, from) != default_value_ and
                            adjacency_matrix_(from, to) != adjacency_matrix_(to, from)) {
-                    edges_count += 2;
+                    edges_count_ += 2;
                 } else if (adjacency_matrix_(from, to) != default_value_ and
                            adjacency_matrix_(to, from) != default_value_) {
-                    ++edges_count;
+                    ++edges_count_;
+                    is_directed = false;
                 } else if (adjacency_matrix_(from, to) != default_value_ or
                            adjacency_matrix_(to, from) != default_value_) {
-                    ++edges_count;
+                    ++edges_count_;
+                    is_undirected = false;
                 }
             }
         }
 
-        return edges_count;
+        if (is_directed)
+            graph_type_ = GraphType::kDirectedGraph;
+        else if (is_undirected)
+            graph_type_ = GraphType::kUndirectedGraph;
+        else if (edges_count_ != 0)
+            graph_type_ = GraphType::kMultiGraph;
+        else
+            graph_type_ = GraphType::kEmptyGraph;
     }
 }
 

@@ -39,7 +39,7 @@ namespace ng {
         size_type edges_count_ {};
         value_type default_value_ {};
 
-        GraphType graph_type_;
+        GraphType graph_type_ = GraphType::kEmptyGraph;
 
     private:
         void CountEdgesAndGraphType();
@@ -108,14 +108,12 @@ namespace ng {
             }
         }
 
-        if (is_directed)
-            graph_type_ = GraphType::kDirectedGraph;
-        else if (is_undirected)
-            graph_type_ = GraphType::kUndirectedGraph;
-        else if (edges_count_ != 0)
-            graph_type_ = GraphType::kMultiGraph;
-        else
-            graph_type_ = GraphType::kEmptyGraph;
+        if (edges_count_ == 0)
+            return;
+
+        if (is_directed) graph_type_ = GraphType::kDirectedGraph;
+        else if (is_undirected) graph_type_ = GraphType::kUndirectedGraph;
+        else graph_type_ = GraphType::kMultiGraph;
     }
 }
 

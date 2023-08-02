@@ -29,7 +29,7 @@ namespace ng {
 
         bool isEmpty() const noexcept;
         size_type getVertexesCount() const noexcept;
-        size_type getEdgesCount() const;
+        size_type getEdgesCount() const { return edges_count_; }
         GraphType getGraphType() const { return graph_type_; }
 
         const_reference operator()(size_type from, size_type to) const;
@@ -73,11 +73,6 @@ namespace ng {
     template <typename T>
     typename Graph<T>::size_type Graph<T>::getVertexesCount() const noexcept {
         return adjacency_matrix_.getRows();
-    }
-
-    template <typename T>
-    typename Graph<T>::size_type Graph<T>::getEdgesCount() const {
-        return edges_count_;
     }
 
     template <typename T>

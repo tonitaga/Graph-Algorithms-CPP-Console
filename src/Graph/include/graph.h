@@ -6,8 +6,7 @@
 namespace ng {
     template <typename T>
     class Graph final {
-        static_assert(std::is_fundamental<T>::value == true,
-                      "Template parameter T must be fundamental");
+        static_assert(std::is_fundamental<T>::value, "Template parameter T must be fundamental");
     };
 }
 

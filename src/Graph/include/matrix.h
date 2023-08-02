@@ -8,8 +8,7 @@
 namespace ng {
     template <typename T>
     class Matrix final {
-        static_assert(std::is_fundamental<T>::value == true,
-                      "Template parameter T must be fundamental");
+        static_assert(std::is_fundamental<T>::value, "Template parameter T must be fundamental");
     public:
         using size_type = std::size_t;
         using value_type = T;

@@ -16,8 +16,7 @@ namespace ng {
 
     template<typename T>
     Matrix<T> FileManager::ReadMatrixFromFile(std::string_view path) {
-        static_assert(std::is_fundamental<T>::value == true,
-                      "Template parameter T must be fundamental");
+        static_assert(std::is_fundamental<T>::value, "Template parameter T must be fundamental");
         Matrix<T> read_data;
         try {
             std::ifstream file(path.data());

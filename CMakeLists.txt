@@ -27,3 +27,10 @@ add_executable(GraphTest
         src/Graph/include/matrix.h
         src/GraphAlgorithms/include/graph_algorithms.h
         src/Tests/graph_test.cc)
+
+add_executable(GraphAlgorithmsTest
+        src/Graph/include/file_manager.h
+        src/Graph/include/graph.h
+        src/Graph/include/matrix.h
+        src/GraphAlgorithms/include/graph_algorithms.h
+        src/Tests/graph_algorithms_test.cc)

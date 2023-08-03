@@ -24,10 +24,6 @@ namespace ng {
         template<typename T, typename Container>
         static std::vector<T> FirstSearch(const Graph<T> &g, std::size_t start_vertex);
     };
-
-
-    template <typename T>
-    constexpr T kInf = std::numeric_limits<T>::max();
 }
 
 #include "graph_algorithms.tpp"

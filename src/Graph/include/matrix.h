@@ -32,6 +32,10 @@ namespace ng {
         reference operator()(size_type row, size_type col);
         const_reference operator()(size_type row, size_type col) const;
 
+        bool operator==(const Matrix &other) const {
+            return rows_ == other.rows_ and cols_ == other.cols_ and data_ == other.data_;
+        }
+
     private:
         size_type rows_ {}, cols_ {};
         std::vector<value_type> data_;

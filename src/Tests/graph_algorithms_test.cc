@@ -28,8 +28,18 @@ void DijkstraTest() {
     std::cout << "DijkstraAlgorithm Result is correct!" << std::endl;
 }
 
+void FLoydWorshellTest() {
+    ng::Graph<int> graph("datasets/file_read_test/adjacency_matrix4.txt");
+    assert(!graph.isEmpty());
+    ng::Matrix<int> distance_matrix = ng::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph);
+    ng::Matrix<int> correct_answer = ng::FileManager::ReadMatrixFromFile<int>("datasets/floyd_worshell/floyd_adjacency_matrix4.txt");
+    assert(distance_matrix == correct_answer);
+    std::cout << "FLoydWorshellAlgorithm Result is correct!" << std::endl;
+}
+
 int main() {
     BFSTest();
     DFSTest();
     DijkstraTest();
+    FLoydWorshellTest();
 }

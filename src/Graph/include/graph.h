@@ -37,7 +37,6 @@ namespace ng {
         Matrix<value_type> adjacency_matrix_;
         size_type edges_count_ {};
         value_type default_value_ {};
-
         GraphType graph_type_ = GraphType::kEmptyGraph;
 
     private:

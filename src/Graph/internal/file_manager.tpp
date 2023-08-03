@@ -40,23 +40,23 @@ namespace ng {
     template<typename T>
     void FileManager::ExportGraphToDot(const Graph<T> &graph, std::string_view save_path, std::string_view graph_name) {
         try {
-            std::ofstream file(save_path.data());
-            if (!file.is_open()) {
-                std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
-                             "Error: Can't create or open file to write\n\tPath:  " << save_path << std::endl;
-                return;
-            }
-
             if (graph.isEmpty()) {
                 std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
-                             "Error: Nothing to save, graph is empty\n\t" << "Path:  " << save_path << std::endl;
+                          "Error: Nothing to save, graph is empty\n\t" << "Path:  " << save_path << std::endl;
                 return;
             }
 
             const auto graph_type = graph.getGraphType();
             if (graph_type == GraphType::kMultiGraph) {
                 std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
-                             "Error: Can't save multi graph into .dot style file\n\tPath:  " << save_path << std::endl;
+                          "Error: Can't save multi graph into .dot style file\n\tPath:  " << save_path << std::endl;
+                return;
+            }
+
+            std::ofstream file(save_path.data());
+            if (!file.is_open()) {
+                std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
+                             "Error: Can't create or open file to write\n\tPath:  " << save_path << std::endl;
                 return;
             }
 

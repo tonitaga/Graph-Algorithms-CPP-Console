@@ -37,9 +37,18 @@ void FLoydWorshellTest() {
     std::cout << "FLoydWorshellAlgorithm Result is correct!" << std::endl;
 }
 
+void PrimTest() {
+    ng::Graph<int> graph("datasets/file_read_test/adjacency_matrix4.txt");
+    assert(!graph.isEmpty());
+    ng::Matrix<int> spanning_tree = ng::GraphAlgorithms::GetLeastSpanningTree(graph);
+    std::cout << spanning_tree << std::endl;
+    std::cout << "PrimAlgorithm Result is correct!" << std::endl;
+}
+
 int main() {
     BFSTest();
     DFSTest();
     DijkstraTest();
     FLoydWorshellTest();
+    PrimTest();
 }

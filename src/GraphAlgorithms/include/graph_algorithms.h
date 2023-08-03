@@ -9,16 +9,19 @@ namespace ng {
     class GraphAlgorithms final {
     public:
         template<typename T>
-        static std::vector<T> BreadthFirstSearch(const Graph<T> &g, std::size_t start_vertex);
+        static std::vector<T> BreadthFirstSearch(const Graph<T> &graph, std::size_t start_vertex);
 
         template<typename T>
-        static std::vector<T> DepthFirstSearch(const Graph<T> &g, std::size_t start_vertex);
+        static std::vector<T> DepthFirstSearch(const Graph<T> &graph, std::size_t start_vertex);
 
         template<typename T>
-        static T GetShortestPathBetweenVertices(const Graph<T> &g, std::size_t start_vertex, std::size_t finish_vertex);
+        static T GetShortestPathBetweenVertices(const Graph<T> &graph, std::size_t start_vertex, std::size_t finish_vertex);
 
         template<typename T>
         static Matrix<T> GetShortestPathsBetweenAllVertices(const Graph<T> &graph);
+
+        template<typename T>
+        static Matrix<T> GetLeastSpanningTree(const Graph<T> &graph);
 
     private:
         template<typename T, typename Container>

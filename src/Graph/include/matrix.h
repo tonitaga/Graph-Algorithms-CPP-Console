@@ -36,6 +36,12 @@ namespace ng {
         size_type rows_ {}, cols_ {};
         std::vector<value_type> data_;
     };
+
+    template <typename T>
+    constexpr T kInf = std::numeric_limits<T>::max();
+
+    template <typename T>
+    std::ostream &operator<<(std::ostream &out, const Matrix<T> &rhs);
 }
 
 #include "matrix.tpp"

@@ -3,6 +3,9 @@
 
 #include "matrix.h"
 
+#include <iomanip>
+#include <iostream>
+
 namespace ng {
     ///
     ///   Implementation of Matrix class
@@ -49,6 +52,22 @@ namespace ng {
     template <typename T>
     void Matrix<T>::Fill(value_type fill) {
         std::fill(data_.begin(), data_.end(), fill);
+    }
+
+    template <typename T>
+    std::ostream &operator<<(std::ostream &out, const Matrix<T> &rhs) {
+        for (std::size_t row = 0, rows = rhs.getRows(); row != rows; ++row) {
+            for (std::size_t col = 0, cols = rhs.getCols(); col != cols; ++col) {
+                if (rhs(row, col) == kInf<T>)
+                    out << std::setw(5) << T{};
+                else
+                    out << std::setw(5) << rhs(row, col);
+            }
+            if (row != rows - 1)
+                out << std::endl;
+        }
+
+        return out;
     }
 }
 

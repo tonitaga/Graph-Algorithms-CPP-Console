@@ -28,6 +28,7 @@ namespace ng {
                     file >> data(row, col);
 
             read_data = std::move(data);
+            file.close();
 
         } catch (std::exception &exception) {
             std::cerr << exception.what() << std::endl;

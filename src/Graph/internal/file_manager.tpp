@@ -36,6 +36,55 @@ namespace ng {
 
         return read_data;
     }
+
+    template<typename T>
+    void FileManager::ExportGraphToDot(const Graph<T> &graph, std::string_view save_path, std::string_view graph_name) {
+        try {
+            std::ofstream file(save_path.data());
+            if (!file.is_open()) {
+                std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
+                             "Error: Can't create or open file to write\n\tPath:  " << save_path << std::endl;
+                return;
+            }
+
+            if (graph.isEmpty()) {
+                std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
+                             "Error: Nothing to save, graph is empty\n\t" << "Path:  " << save_path << std::endl;
+                return;
+            }
+
+            const auto graph_type = graph.getGraphType();
+            if (graph_type == GraphType::kMultiGraph) {
+                std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
+                             "Error: Can't save multi graph into .dot style file\n\tPath:  " << save_path << std::endl;
+                return;
+            }
+
+            std::string arrow = " -> ";
+            if (graph_type == GraphType::kUndirectedGraph) {
+                file << "graph " << graph_name << " {\n";
+                arrow = " -- ";
+            } else
+                file << "digraph " << graph_name << " {\n";
+
+            file << "\tlayout=circo\n";
+
+            auto graph_edges = graph.getEdges();
+            for (const GraphEdge<T>& edge : graph_edges) {
+                file << "\t" << edge.from + 1 << arrow << edge.to + 1;
+                if (edge.weight != 1) {
+                    file << " [label=\"" << edge.weight << "\"]";
+                }
+                file << '\n';
+            }
+
+            file << "}\n";
+            file.close();
+
+        } catch (std::exception &exception) {
+            std::cerr << exception.what() << std::endl;
+        }
+    }
 }
 
 #endif //GRAPHALGORITHMS_FILE_MANAGER_TPP

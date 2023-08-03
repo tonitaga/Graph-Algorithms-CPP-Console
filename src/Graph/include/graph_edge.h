@@ -22,6 +22,12 @@ namespace ng {
             return GraphEdge(kInf<T>, kInf<T>, kInf<T>);
         }
     };
+
+    template <typename T>
+    std::ostream &operator<<(std::ostream &out, const GraphEdge<T> &edge) {
+        out << "Edge: { from: " << edge.from << ", to: " << edge.to << ", weight: " << edge.weight << " }";
+        return out;
+    }
 }
 
 #endif //GRAPHALGORITHMS_GRAPH_EDGE_H

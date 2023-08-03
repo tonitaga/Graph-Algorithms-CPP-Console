@@ -3,6 +3,7 @@
 
 #include <cctype>
 #include <vector>
+#include <limits>
 #include <type_traits>
 
 namespace ng {

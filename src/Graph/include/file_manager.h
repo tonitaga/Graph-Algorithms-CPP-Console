@@ -3,13 +3,16 @@
 
 #include <string_view>
 
-#include "matrix.h"
+#include "graph.h"
 
 namespace ng {
     class FileManager final {
     public:
         template<typename T>
         static Matrix<T> ReadMatrixFromFile(std::string_view path);
+
+        template<typename T>
+        static void ExportGraphToDot(const Graph<T> &graph, std::string_view save_path, std::string_view graph_name = "Untitled");
     };
 }
 

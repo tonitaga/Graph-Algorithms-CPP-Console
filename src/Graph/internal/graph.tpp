@@ -2,6 +2,7 @@
 #define GRAPHALGORITHMS_GRAPH_TPP
 
 #include "graph.h"
+#include "file_manager.h"
 
 namespace ng {
     ///
@@ -9,14 +10,14 @@ namespace ng {
     ///
     template<typename T>
     Graph<T>::Graph(const Matrix<value_type> &adjacency_matrix)
-            : adjacency_matrix_(adjacency_matrix)
+        : adjacency_matrix_(adjacency_matrix)
     {
         CountEdgesAndGraphType();
     }
 
     template<typename T>
     Graph<T>::Graph(std::string_view path)
-            : adjacency_matrix_(FileManager::ReadMatrixFromFile<value_type>(path))
+        : adjacency_matrix_(FileManager::ReadMatrixFromFile<value_type>(path))
     {
         CountEdgesAndGraphType();
     }

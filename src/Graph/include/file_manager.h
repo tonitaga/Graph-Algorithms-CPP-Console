@@ -1,8 +1,6 @@
 #ifndef GRAPHALGORITHMS_FILE_MANAGER_H
 #define GRAPHALGORITHMS_FILE_MANAGER_H
 
-#include <fstream>
-#include <iostream>
 #include <string_view>
 
 #include "matrix.h"

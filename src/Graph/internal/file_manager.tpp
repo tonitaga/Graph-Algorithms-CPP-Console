@@ -3,6 +3,9 @@
 
 #include "file_manager.h"
 
+#include <fstream>
+#include <iostream>
+
 namespace ng {
     template<typename T>
     Matrix<T> FileManager::ReadMatrixFromFile(std::string_view path) {

@@ -4,7 +4,6 @@
 #include <string_view>
 
 #include "matrix.h"
-#include "file_manager.h"
 
 namespace ng {
     enum class GraphType : int {

@@ -20,7 +20,16 @@ void DFSTest() {
     std::cout << "DFS Result is correct!" << std::endl;
 }
 
+void DijkstraTest() {
+    ng::Graph<int> graph("datasets/file_read_test/adjacency_matrix4.txt");
+    assert(!graph.isEmpty());
+    int shortest_path = ng::GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 5);
+    assert(shortest_path == 2);
+    std::cout << "DijkstraAlgorithm Result is correct!" << std::endl;
+}
+
 int main() {
     BFSTest();
     DFSTest();
+    DijkstraTest();
 }

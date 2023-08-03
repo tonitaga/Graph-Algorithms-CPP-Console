@@ -13,6 +13,7 @@ add_executable(GraphAlgorithms
         src/Graph/include/file_manager.h
         src/Graph/include/graph.h
         src/Graph/include/matrix.h
+        src/Graph/include/graph_edge.h
         src/GraphAlgorithms/include/graph_algorithms.h
         main.cc)
 
@@ -20,6 +21,7 @@ add_executable(FileReadTest
         src/Graph/include/file_manager.h
         src/Graph/include/graph.h
         src/Graph/include/matrix.h
+        src/Graph/include/graph_edge.h
         src/GraphAlgorithms/include/graph_algorithms.h
         src/Tests/file_read_test.cc)
 
@@ -27,6 +29,7 @@ add_executable(GraphTest
         src/Graph/include/file_manager.h
         src/Graph/include/graph.h
         src/Graph/include/matrix.h
+        src/Graph/include/graph_edge.h
         src/GraphAlgorithms/include/graph_algorithms.h
         src/Tests/graph_test.cc)
 
@@ -34,5 +37,6 @@ add_executable(GraphAlgorithmsTest
         src/Graph/include/file_manager.h
         src/Graph/include/graph.h
         src/Graph/include/matrix.h
+        src/Graph/include/graph_edge.h
         src/GraphAlgorithms/include/graph_algorithms.h
         src/Tests/graph_algorithms_test.cc)

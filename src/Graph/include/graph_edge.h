@@ -1,0 +1,8 @@
+//
+// Created by onlyf on 03.08.2023.
+//
+
+#ifndef GRAPHALGORITHMS_GRAPH_EDGE_H
+#define GRAPHALGORITHMS_GRAPH_EDGE_H
+
+#endif //GRAPHALGORITHMS_GRAPH_EDGE_H

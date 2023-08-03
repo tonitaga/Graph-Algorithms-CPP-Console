@@ -29,7 +29,7 @@ namespace ng {
 
         bool isEmpty() const noexcept;
         size_type getVertexesCount() const noexcept;
-        size_type getEdgesCount() const noexcept { return edges_count_; }
+        size_type getEdgesCount() const noexcept { return edges_.size(); }
         GraphType getGraphType() const noexcept { return graph_type_; }
         std::vector<edge_type> getEdges() const noexcept { return edges_; }
 
@@ -37,10 +37,9 @@ namespace ng {
 
     private:
         Matrix<value_type> adjacency_matrix_;
-        size_type edges_count_ {};
+        std::vector<edge_type> edges_;
         value_type default_value_ {};
         GraphType graph_type_ = GraphType::kEmptyGraph;
-        std::vector<edge_type> edges_;
 
     private:
         void CountEdgesAndGraphType();

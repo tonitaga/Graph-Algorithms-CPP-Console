@@ -29,3 +29,7 @@ add_executable(GraphTest
 add_executable(GraphAlgorithmsTest
         ${HEADER_FILES}
         src/Tests/graph_algorithms_test.cc)
+
+add_executable(GraphDotExportTest
+        ${HEADER_FILES}
+        src/Tests/graph_dot_save_test.cc)

@@ -35,22 +35,18 @@ namespace ng {
         for (size_type from = 0, size = getVertexesCount(); from != size; ++from) {
             for (size_type to = from; to != size; ++to) {
                 if (from == to and adjacency_matrix_(from, to) != default_value_) {
-                    ++edges_count_;
                     edges_.emplace_back(from, to, adjacency_matrix_(from, to));
                 } else if (adjacency_matrix_(from, to) != default_value_ and
                            adjacency_matrix_(to, from) != default_value_ and
                            adjacency_matrix_(from, to) != adjacency_matrix_(to, from)) {
-                    edges_count_ += 2;
                     edges_.emplace_back(from, to, adjacency_matrix_(from, to));
                     edges_.emplace_back(to, from, adjacency_matrix_(from, to));
                 } else if (adjacency_matrix_(from, to) != default_value_ and
                            adjacency_matrix_(to, from) != default_value_) {
-                    ++edges_count_;
                     edges_.emplace_back(from, to, adjacency_matrix_(from, to));
                     is_directed = false;
                 } else if (adjacency_matrix_(from, to) != default_value_ or
                            adjacency_matrix_(to, from) != default_value_) {
-                    ++edges_count_;
                     if (adjacency_matrix_(from, to) != default_value_)
                         edges_.emplace_back(from, to, adjacency_matrix_(from, to));
                     else
@@ -60,7 +56,7 @@ namespace ng {
             }
         }
 
-        if (edges_count_ == 0)
+        if (edges_.empty())
             return;
 
         if (is_directed) graph_type_ = GraphType::kDirectedGraph;

@@ -17,6 +17,9 @@ namespace ng {
         template<typename T>
         static T GetShortestPathBetweenVertices(const Graph<T> &g, std::size_t start_vertex, std::size_t finish_vertex);
 
+        template<typename T>
+        static Matrix<T> GetShortestPathsBetweenAllVertices(const Graph<T> &graph);
+
     private:
         template<typename T, typename Container>
         static std::vector<T> FirstSearch(const Graph<T> &g, std::size_t start_vertex);

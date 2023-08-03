@@ -95,6 +95,32 @@ namespace ng {
 
         return distance[finish_vertex];
     }
+
+    template<typename T>
+    Matrix<T> GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph<T> &graph) {
+        const std::size_t kVertexesCount = graph.getVertexesCount();
+
+        Matrix<T> distances_matrix(kVertexesCount, kInf<T>);
+
+        for (std::size_t row = 0; row != kVertexesCount; ++row)
+            for (std::size_t col = 0; col != kVertexesCount; ++col) {
+                distances_matrix(row, col) = graph(row, col) == 0 ? kInf<T> : graph(row, col);
+                if (row == col)
+                    distances_matrix(row, col) = 0;
+            }
+
+        for (std::size_t v = 0; v != kVertexesCount; ++v)
+            for (std::size_t row = 0; row != kVertexesCount; ++row)
+                for (std::size_t col = 0; col != kVertexesCount; ++col) {
+                    auto weight = distances_matrix(row, v) + distances_matrix(v, col);
+                    if (distances_matrix(row, v) != kInf<T> and distances_matrix(v, col) != kInf<T> and
+                        distances_matrix(row, col) > weight) {
+                        distances_matrix(row, col) = weight;
+                    }
+                }
+
+        return distances_matrix;
+    }
 }
 
 #endif //GRAPHALGORITHMS_GRAPH_ALGORITHMS_TPP

@@ -18,4 +18,4 @@ namespace ng {
 
 #include "file_manager.tpp"
 
-#endif //GRAPHALGORITHMS_FILE_MANAGER_H
+#endif //!GRAPHALGORITHMS_FILE_MANAGER_H

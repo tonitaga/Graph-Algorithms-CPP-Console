@@ -56,12 +56,13 @@ namespace ng {
 
     template <typename T>
     std::ostream &operator<<(std::ostream &out, const Matrix<T> &rhs) {
+        out.precision(2);
         for (std::size_t row = 0, rows = rhs.getRows(); row != rows; ++row) {
             for (std::size_t col = 0, cols = rhs.getCols(); col != cols; ++col) {
                 if (rhs(row, col) == kInf<T>)
-                    out << std::setw(5) << T{};
+                    out << std::setw(9) << T{};
                 else
-                    out << std::setw(5) << rhs(row, col);
+                    out << std::setw(9) << rhs(row, col);
             }
             if (row != rows - 1)
                 out << std::endl;

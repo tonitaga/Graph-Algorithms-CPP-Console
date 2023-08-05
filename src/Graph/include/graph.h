@@ -32,6 +32,7 @@ namespace ng {
         size_type getEdgesCount() const noexcept { return edges_.size(); }
         GraphType getGraphType() const noexcept { return graph_type_; }
         std::vector<edge_type> getEdges() const noexcept { return edges_; }
+        Matrix<value_type> getAdjacencyMatrix() const noexcept { return adjacency_matrix_; }
 
         const_reference operator()(size_type from, size_type to) const;
 

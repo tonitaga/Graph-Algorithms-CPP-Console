@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Werror -Wextra")
 
 include_directories(src/Graph/include)
-include_directories(src/Graph/include/salesmans_problem)
 include_directories(src/GraphAlgorithms/include)
 include_directories(src/Graph/internal)
 include_directories(src/GraphAlgorithms/internal)

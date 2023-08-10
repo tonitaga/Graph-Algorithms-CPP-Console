@@ -7,20 +7,18 @@
 #include <iostream>
 
 namespace ng {
+
     ///
     ///   Implementation of Matrix class
     ///
+
     template<typename T>
     Matrix<T>::Matrix(size_type rows, size_type cols, value_type fill)
-            : rows_(rows), cols_(cols), data_(rows_ * cols_, fill)
-    {
-    }
+            : rows_(rows), cols_(cols), data_(rows_ * cols_, fill) {}
 
     template<typename T>
     Matrix<T>::Matrix(size_type square, value_type fill)
-            : Matrix(square, square, fill)
-    {
-    }
+            : Matrix(square, square, fill) {}
 
 
     template<typename T>
@@ -56,13 +54,12 @@ namespace ng {
 
     template <typename T>
     std::ostream &operator<<(std::ostream &out, const Matrix<T> &rhs) {
-        out.precision(2);
         for (std::size_t row = 0, rows = rhs.getRows(); row != rows; ++row) {
             for (std::size_t col = 0, cols = rhs.getCols(); col != cols; ++col) {
                 if (rhs(row, col) == kInf<T>)
-                    out << std::setw(9) << T{};
+                    out << std::setw(4) << T{};
                 else
-                    out << std::setw(9) << rhs(row, col);
+                    out << std::setw(4) << rhs(row, col);
             }
             if (row != rows - 1)
                 out << std::endl;

@@ -1,4 +1,4 @@
-graph FunnyGraph {
+graph Untitled {
 	layout=circo
 	1 -- 2
 	1 -- 3

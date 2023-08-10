@@ -5,10 +5,10 @@
 #include <cassert>
 
 void TestGraph() {
-    ng::Matrix<int> matrix(ng::FileManager::ReadMatrixFromFile<int>("datasets/file_read_test/adjacency_matrix8.txt"));
+    ng::Matrix<int> matrix(ng::FileManager::ReadMatrixFromFile<int>("datasets/file_read_test/adjacency_matrix9.txt"));
     ng::Graph<int> graph(matrix);
-//    assert(graph.getEdgesCount() == 55);
-//    assert(graph.getGraphType() == ng::GraphType::kUndirectedGraph);
+    assert(graph.getEdgesCount() == 128);
+    assert(graph.getGraphType() == ng::GraphType::kUndirectedGraph);
     std::cout << "Graph edges count: " << graph.getEdgesCount() << std::endl;
 //    auto graph_edges = graph.getEdges();
 //    for (const auto &edge : graph_edges)

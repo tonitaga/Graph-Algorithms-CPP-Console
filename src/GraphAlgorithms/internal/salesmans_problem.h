@@ -39,10 +39,10 @@ namespace ng {
             double GetRandomChoice();
         };
 
-        const double kAlpha_ = 2.0;
-        const double kBeta_ = 1.0;
-        const double kPheromone0_ = 2;
-        const double kQ_ = 64.0;
+        const double kAlpha_ = 1.0;
+        const double kBeta_ = 2.0;
+        const double kPheromone0_ = 1;
+        const double kQ_ = 5.0;
         const double kEvaporation_ = 0.2;
 
         Graph<T> graph_;
@@ -70,27 +70,28 @@ namespace ng {
 
     template<typename T>
     void AntColony<T>::CreateAnts() {
-        const auto kAntsCount = graph_.getVertexesCount();
+        const auto kAntsCount = graph_.getVertexesCount() * 2;
         ants_.resize(kAntsCount);
 
-        std::size_t start_vertex = 0;
+        std::uniform_int_distribution<std::size_t> dist(0, graph_.getVertexesCount() - 1);
+        std::default_random_engine re(std::chrono::system_clock::now().time_since_epoch().count());
+
         for (auto &ant : ants_)
-            ant = Ant(start_vertex++);
+            ant = Ant(dist(re));
     }
 
     template<typename T>
     TsmProblem<T> AntColony<T>::SolveSalesmansProblem() {
-        constexpr std::size_t kMaxIterationsWithoutImprovement = 500;
+        constexpr std::size_t kMaxIterationsWithoutImprovement = 2500;
         const std::size_t kVertexesCount = graph_.getVertexesCount();
         std::size_t counter = 0;
+        std::size_t iteration = 0;
 
         TsmProblem<T> path;
         path.distance = kInf<T>;
 
-        // FOR DEBUG
-        int current_generation = 1;
-
         while (counter++ != kMaxIterationsWithoutImprovement) {
+            iteration++;
             Matrix<double> summary_pheromone(kVertexesCount, 0.0);
             CreateAnts();
             for (auto &ant : ants_) {
@@ -101,26 +102,15 @@ namespace ng {
                 if (ant_path.vertices.size() == kVertexesCount + 1) {
                     if (path.distance > ant.path.distance) {
                         path = std::move(ant.path);
-
-                        // DEBUG
-                        std::cout << "Generation: " << current_generation << "; Find shorter path:\n";
-                        for (auto v : path.vertices)
-                            std::cout << v << ' ';
-                        std::cout << '\n';
-                        std::cout << "Length: " << path.distance << '\n';
-
+                        std::cout << "- Update path on iteration: " << iteration << std::endl;
                         counter = 0;
                     }
+
+                    for (std::size_t v = 0; v != ant_path.vertices.size() - 1; ++v)
+                        summary_pheromone(ant_path.vertices[v], ant_path.vertices[v + 1]) += kQ_ / ant_path.distance;
                 }
-
-                for (std::size_t v = 0; v != ant_path.vertices.size() - 1; ++v)
-                    summary_pheromone(ant_path.vertices[v], ant_path.vertices[v + 1]) += kQ_ / ant_path.distance;
             }
-            current_generation++;
             CalculatePheromone(summary_pheromone);
-
-//            std::cout << "Pheromone matrix after " << current_generation++ << " generation:\n";
-//            std::cout << pheromone_ << std::endl;
         }
 
         return path;
@@ -131,8 +121,8 @@ namespace ng {
         for (std::size_t from = 0, size = summary_pheromone.getRows(); from != size; ++from)
             for (std::size_t to = 0; to != size; ++to) {
                 pheromone_(from, to) = (1 - kEvaporation_) * pheromone_(from, to) + summary_pheromone(from, to);
-                if (pheromone_(from, to) < 0.1 and from != to)
-                    pheromone_(from, to) = 0.1;
+                if (pheromone_(from, to) < 0.01 and from != to)
+                    pheromone_(from, to) = 0.01;
             }
     }
 

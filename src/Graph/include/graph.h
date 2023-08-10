@@ -3,20 +3,13 @@
 
 #include <string_view>
 
-#include "matrix.h"
-#include "graph_edge.h"
+#include "file_manager.h"
 
 namespace ng {
-    enum class GraphType : int {
-        kEmptyGraph,
-        kDirectedGraph,
-        kUndirectedGraph,
-        kMultiGraph
-    };
-
     template <typename T>
     class Graph final {
         static_assert(std::is_fundamental<T>::value, "Template parameter T must be fundamental");
+
     public:
         using size_type = std::size_t;
         using value_type = T;
@@ -26,6 +19,10 @@ namespace ng {
     public:
         Graph() noexcept = default;
         explicit Graph(const Matrix<value_type> &adjacency_matrix);
+        explicit Graph(std::string_view file_path);
+
+        void LoadGraphFromFile(std::basic_string_view<char> file_path);
+        void ExportGraphToDot(std::basic_string_view<char> file_path) noexcept;
 
         bool isEmpty() const noexcept;
         size_type getVertexesCount() const noexcept;
@@ -45,6 +42,9 @@ namespace ng {
     private:
         void CountEdgesAndGraphType();
     };
+
+    template <typename T>
+    std::ostream &operator<<(std::ostream &out, const Graph<T> &graph);
 }
 
 #include "graph.tpp"

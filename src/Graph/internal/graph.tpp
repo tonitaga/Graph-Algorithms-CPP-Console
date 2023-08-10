@@ -4,14 +4,32 @@
 #include "graph.h"
 
 namespace ng {
+
     ///
     ///   Implementation of Graph class
     ///
+
     template<typename T>
     Graph<T>::Graph(const Matrix<value_type> &adjacency_matrix)
-        : adjacency_matrix_(adjacency_matrix)
-    {
+        : adjacency_matrix_(adjacency_matrix) {
         CountEdgesAndGraphType();
+    }
+
+    template <typename T>
+    Graph<T>::Graph(std::string_view file_path)
+        : adjacency_matrix_(FileManager::ReadMatrixFromFile<T>(file_path)) {
+        CountEdgesAndGraphType();
+    }
+
+    template <typename T>
+    void Graph<T>::LoadGraphFromFile(std::basic_string_view<char> file_path) {
+        adjacency_matrix_ = FileManager::ReadMatrixFromFile<T>(file_path);
+        CountEdgesAndGraphType();
+    }
+
+    template <typename T>
+    void Graph<T>::ExportGraphToDot(std::basic_string_view<char> file_path) noexcept {
+        FileManager::ExportGraphToDot(edges_, graph_type_, file_path);
     }
 
     template <typename T>
@@ -31,6 +49,9 @@ namespace ng {
 
     template <typename T>
     void Graph<T>::CountEdgesAndGraphType() {
+        edges_.clear();
+        graph_type_ = GraphType::kEmptyGraph;
+
         bool is_directed = true, is_undirected = true;
         for (size_type from = 0, size = getVertexesCount(); from != size; ++from) {
             for (size_type to = from; to != size; ++to) {
@@ -62,6 +83,16 @@ namespace ng {
         if (is_directed) graph_type_ = GraphType::kDirectedGraph;
         else if (is_undirected) graph_type_ = GraphType::kUndirectedGraph;
         else graph_type_ = GraphType::kMultiGraph;
+    }
+
+    template <typename T>
+    std::ostream &operator<<(std::ostream &out, const Graph<T> &graph) {
+        out << "Graph contains:\n\t";
+        out << "Vertexes count: " << graph.getVertexesCount() << "\n\t";
+        out << "Edges count:    " << graph.getEdgesCount() << "\n\t";
+        out << "Adjacency Matrix:\n";
+        out << graph.getAdjacencyMatrix();
+        return out;
     }
 }
 

@@ -2,22 +2,23 @@
 #define GRAPHALGORITHMS_GRAPH_ALGORITHMS_TPP
 
 #include "graph_algorithms.h"
-#include "graph_edge.h"
+#include "graph_help.h"
 
-#include <stack>
-#include <queue>
+#include "stack.h"
+#include "queue.h"
+
 #include <set>
 
 namespace ng {
-    template<typename T, typename Container = std::stack<T>>
-    std::vector<T> GraphAlgorithms::FirstSearch(const Graph<T> &graph, std::size_t start_vertex) {
+    template<typename T, typename Container = Stack<T>>
+    std::vector<std::size_t> GraphAlgorithms::FirstSearch(const Graph<T> &graph, std::size_t start_vertex) {
         if (graph.isEmpty() or start_vertex > graph.getVertexesCount())
             return {};
 
-        constexpr bool is_dfs = std::is_same_v<Container, std::stack<T>>;
+        constexpr bool is_dfs = std::is_same_v<Container, Stack<T>>;
         const std::size_t kVertexesCount = graph.getVertexesCount();
 
-        std::vector<T> enter_order;
+        std::vector<std::size_t> enter_order;
         std::vector<std::size_t> visited(kVertexesCount);
         Container c;
 
@@ -56,13 +57,13 @@ namespace ng {
     }
 
     template<typename T>
-    std::vector<T> GraphAlgorithms::DepthFirstSearch(const Graph<T> &graph, std::size_t start_vertex) {
+    std::vector<std::size_t> GraphAlgorithms::DepthFirstSearch(const Graph<T> &graph, std::size_t start_vertex) {
         return FirstSearch<T>(graph, start_vertex);
     }
 
     template<typename T>
-    std::vector<T> GraphAlgorithms::BreadthFirstSearch(const Graph<T> &graph, std::size_t start_vertex) {
-        return FirstSearch<T, std::queue<T>>(graph, start_vertex);
+    std::vector<std::size_t> GraphAlgorithms::BreadthFirstSearch(const Graph<T> &graph, std::size_t start_vertex) {
+        return FirstSearch<T, Queue<T>>(graph, start_vertex);
     }
 
     template<typename T>
@@ -176,6 +177,12 @@ namespace ng {
         }
 
         return spanning_tree;
+    }
+
+    template<typename T>
+    TsmProblem<T> GraphAlgorithms::SolveSalesmansProblem(const Graph<T> &graph) {
+        AntColony<T> ant_colony(graph);
+        return ant_colony.SolveSalesmansProblem();
     }
 }
 

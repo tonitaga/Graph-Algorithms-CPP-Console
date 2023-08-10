@@ -3,7 +3,8 @@
 
 #include <string_view>
 
-#include "graph.h"
+#include "matrix.h"
+#include "graph_help.h"
 
 namespace ng {
     class FileManager final {
@@ -12,7 +13,7 @@ namespace ng {
         static Matrix<T> ReadMatrixFromFile(std::string_view path);
 
         template<typename T>
-        static void ExportGraphToDot(const Graph<T> &graph, std::string_view save_path, std::string_view graph_name = "Untitled");
+        static void ExportGraphToDot(const std::vector<GraphEdge<T>> &edges, GraphType graph_type, std::string_view save_path);
     };
 }
 

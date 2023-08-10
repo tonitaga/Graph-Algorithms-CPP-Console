@@ -39,15 +39,14 @@ namespace ng {
     }
 
     template<typename T>
-    void FileManager::ExportGraphToDot(const Graph<T> &graph, std::string_view save_path, std::string_view graph_name) {
+    void FileManager::ExportGraphToDot(const std::vector<GraphEdge<T>> &edges, GraphType graph_type, std::string_view save_path) {
         try {
-            if (graph.isEmpty()) {
+            if (edges.empty()) {
                 std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
                           "Error: Nothing to save, graph is empty\n\t" << "Path:  " << save_path << std::endl;
                 return;
             }
 
-            const auto graph_type = graph.getGraphType();
             if (graph_type == GraphType::kMultiGraph) {
                 std::cerr << "FileManager::ExportGraphToDot:\n\t" <<
                           "Error: Can't save multi graph into .dot style file\n\tPath:  " << save_path << std::endl;
@@ -63,15 +62,14 @@ namespace ng {
 
             std::string arrow = " -> ";
             if (graph_type == GraphType::kUndirectedGraph) {
-                file << "graph " << graph_name << " {\n";
+                file << "graph Untitled" << " {\n";
                 arrow = " -- ";
             } else
-                file << "digraph " << graph_name << " {\n";
+                file << "digraph Untitled" << " {\n";
 
             file << "\tlayout=circo\n";
 
-            auto graph_edges = graph.getEdges();
-            for (const GraphEdge<T>& edge : graph_edges) {
+            for (const GraphEdge<T>& edge : edges) {
                 file << "\t" << edge.from + 1 << arrow << edge.to + 1;
                 if (edge.weight != 1) {
                     file << " [label=\"" << edge.weight << "\"]";

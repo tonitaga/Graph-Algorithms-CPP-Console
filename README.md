@@ -6,7 +6,6 @@
 
 ## Что такое граф?
 
-<spoiler title="Посмотреть">
 -  Я не стану подробно описывать, что такое граф, так как полно других источников, но скажу, что задача из ОГЭ(ЕГЭ) по информатике на нахождение кратчайшего пути, это и есть граф.
 
 ![ОГЭ](https://habrastorage.org/webt/jn/_b/hj/jn_bhjrh6hg2la6xj8z137czmds.png)
@@ -14,7 +13,6 @@
 
 - Держите ссылочку на основную информацию о графах: [Графы](https://ru.wikipedia.org/wiki/Граф_(математика))
 - Больше про терминологию в мире графов можно прочитать [здесь](https://www.techiedelight.com/ru/terminology-and-representations-of-graphs/)
-</spoiler>
 
 ## Рассматриваемые алгоритмы
 
@@ -32,10 +30,9 @@
 
 - Представим граф в виде класса обёртки над [матрицей смежности](https://ru.wikipedia.org/wiki/Матрица_смежности). Класс-wrapper будет знать количество рёбер, вершин, и тип графа. Обычно такого функционала хватает для большинства алгоритмов.
 
-## BFS & DFS
+---
 
-<spoiler title="BFS">
-## Поиск (Обход) в ширину | BFS
+## BFS & DFS
 
 ![BFS](https://habrastorage.org/webt/dg/zs/uo/dgzsuoihjhoecvzregts6txf7_g.gif)
 
@@ -59,10 +56,8 @@
 5.3.1.2. Кладем эту вершину в очередь и **enter_order**
 5.3.2. Иначе ничего не делаем
 6. Возвращаем **enter_order**
-</spoiler>
 
-<spoiler title="DFS">
-## Поиск (Обход) в глубину| DFS
+---
 
 ![DFS](https://habrastorage.org/webt/es/e4/qe/ese4qerfshpvortftmedjgg0dls.gif)
 
@@ -87,151 +82,10 @@
 5.2.2. Иначе ничего не делаем
 5.3. Если условие 5.2.1 не выполнилось выполнилось, то удаляем из стека наш верхний элемент
 6. Возвращаем **enter_order**
-</spoiler>
-
-<spoiler title="Реализация на С++">
-## BFS
-
-```cpp
-std::vector<int> BreadthFirstSearch(Graph &graph, int start_vertex) {
-  if (start_vertex > graph.GetVertexesCount() or start_vertex <= 0)
-    return {};
-
-  std::vector<int> enter_order;
-  std::vector<short> visited(graph.GetVertexesCount());
-  std::queue<int> q;
-  
-  // Функция принимает вершину, нумерация которой начинается с 1
-  // Для удобства уменьшаем ее значение на 1, чтобы нумерация начиналась с 0
-  --start_vertex;
-  visited[start_vertex] = true;
-  q.push(start_vertex);
-  enter_order.emplace_back(start_vertex + 1);
-
-  while (!q.empty()) {
-    auto from = q.front();
-    q.pop();
-
-    for (int to = 0, size = graph.GetVertexesCount(); to != size; ++to) {
-      if (!visited[to] and graph(from, to) != 0) {
-        visited[to] = true;
-        q.push(to);
-        enter_order.emplace_back(to + 1);
-      }
-    }
-  }
-
-  return enter_order;
-}
-```
-
-## DFS
-
-```cpp
-std::vector<int> DepthFirstSearch(Graph &graph, int start_vertex) {
-  if (start_vertex > graph.GetVertexesCount() or start_vertex <= 0)
-    return {};
-
-  std::vector<int> enter_order;
-  std::vector<short> visited(graph.GetVertexesCount());
-  std::stack<int> s;
-
-  --start_vertex;
-  visited[start_vertex] = true;
-  s.push(start_vertex);
-  enter_order.emplace_back(start_vertex + 1);
-
-  while (!s.empty()) {
-    auto from = c.top();
-    bool is_found = false;
-
-    for (int to = 0, size = graph.GetVertexesCount(); to != size; ++to) {
-      if (!visited[to] and graph(from, to) != 0) {
-        is_found = true;
-        visited[to] = true;
-        s.push(to);
-        enter_order.emplace_back(to + 1);
-        from = to;
-      }
-    }
-
-    if (!is_found)
-      s.pop();
-  }
-
-  return enter_order;
-}
-```
-
-> Заметим, что код практически ничем не отличается, поэтому их можно объединить в одну функцию, и передавать туда просто тип контейнера
-
-```cpp
-//
-// If Container type = std::stack<int> it will be DepthFirstSearch
-// If Container type = std::queue<int> it will be BreadthFirstSearch
-//
-template <typename Container = std::stack<int>>
-std::vector<int> FirstSearch(Graph &graph, int start_vertex)
-{
-  if (start_vertex > graph.GetVertexesCount() or start_vertex <= 0)
-    return {};
-
-  constexpr bool is_stack = std::is_same_v<Container, std::stack<int>>;
-
-  std::vector<int> enter_order;
-  std::vector<short> visited(graph.GetVertexesCount());
-  Container c;
-
-  --start_vertex;
-  visited[start_vertex] = true;
-  c.push(start_vertex);
-  enter_order.emplace_back(start_vertex + 1);
-
-  while (!c.empty()) {
-    int from = -1;
-    if constexpr (is_stack) from = c.top();
-    else {
-      from = c.front();
-      c.pop()
-    }
-
-    bool is_found = false;
-
-    for (int to = 0, size = graph.GetVertexesCount(); to != size; ++to) {
-      if (!visited[to] and graph(from, to) != 0) {
-        is_found = true;
-        visited[to] = true;
-        c.push(to);
-        enter_order.emplace_back(to + 1);
-        if (is_stack)
-          from = to;
-      }
-    }
-
-    if (is_stack and !is_found)
-      c.pop();
-  }
-
-  return enter_order;
-}
-```
-
-- Тогда код BFS & DFS будет выглядеть так:
-
-```cpp
-std::vector<int> BreadthFirstSearch(Graph &graph, int start_vertex) {
-  return FirstSearch<std::queue<int>>(graph, start_vertex);
-}
-
-std::vector<int> DepthFirstSearch(Graph &graph, int start_vertex) {
-  return FirstSearch<std::stack<int>>(graph, start_vertex);
-}
-```
-</spoiler>
+   
+---
 
 ## Алгоритм Дейкстры
-
-<spoiler title="Dijkstra's Algorithm">
 
 ![image](https://habrastorage.org/webt/-z/wb/e2/-zwbe2du9ctadto9sv4nenph6da.gif)
 
@@ -259,48 +113,10 @@ std::vector<int> DepthFirstSearch(Graph &graph, int start_vertex) {
 6.3.2.2. В distance обновляем расстояние от **start до to** на более короткое, которое мы проверяли в условии 6.3.2
 6.3.2.3. Вставляем в множество обновленную пару: **{расстояние от start до to, индекс вершины to}**
 7. Возвращаем из массива** distance** расстояние под индексом **finish**
-</spoiler>
 
-<spoiler title="Реализация на С++">
-```cpp
-int GetShortestPathBetweenVertices(Graph &graph, int start, int finish) {
-  if (start <= 0 or finish <= 0 or start > graph.GetVertexesCount() or finish > graph.GetVertexesCount())
-    return kInf;
-
-  std::vector<int> distance(graph.GetVertexesCount(), kInf);
-
-  --start, --finish;
-  distance[start] = 0;
-
-  std::set<std::pair<int, int>> q;
-  q.insert({distance[start], start});
-
-  while (!q.empty()) {
-    auto from = q.begin()->second;
-    q.erase(q.begin());
-
-    for (int to = 0, size = graph.GetVertexesCount(); to != size; ++to) {
-      bool edge_is_exists = graph(from, to) != 0;
-      bool new_edge_is_shorter = distance[to] > distance[from] + graph(from, to);
-
-      if (edge_is_exists and new_edge_is_shorter) {
-        q.erase({distance[to], to});
-        distance[to] = distance[from] + graph(from, to);
-        q.insert({distance[to], to});
-      }
-    }
-  }
-
-  return distance[finish];
-}
-```
-
-> По коду можно увидеть явные признаки схожести с BFS, я даже специально множество назвал как q, потому что в данном случае множество отыгрывает роль псевдо-очереди
-</spoiler>
+---
 
 ## Алгоритм Флойда-Уоршелла
-
-<spoiler title="Floyd-Worschell Algorithm">
 
 ![image](https://habrastorage.org/webt/ti/fb/tp/tifbtpmtipm_cojinbapcmm8mnk.png)
 
@@ -325,45 +141,9 @@ int GetShortestPathBetweenVertices(Graph &graph, int start, int finish) {
 
 ![image](https://habrastorage.org/webt/sm/nh/ur/smnhur_vfqpssxdaz-kbzto509k.png)
 
-</spoiler>
-
-<spoiler title="Реализация на С++">
-```cpp
-Matrix<int> GetShortestPathsBetweenAllVertices(Graph &graph) {
-  const int vertexes_count = graph.GetVertexesCount();
-  Matrix<int> distance(vertexes_count, vertexes_count, kInf);
-
-  // Пункт 2
-  for (int row = 0; row != vertexes_count; ++row) {
-    for (int col = 0; col != vertexes_count; ++col) {
-      distance(row, col) = graph(row, col) == 0 ? kInf : graph(row, col);
-      if (row == col)
-        distance(row, col) = 0;
-    }
-  }
-
-  // Пункт 3 (Постепенно открываем доступ к новым вершинам)
-  for (int v = 0; v != vertexes_count; ++v) {
-    // Пункт 3.1 (Пробегаемся по матрице distance)
-    for (std::size_t row = 0; row != vertexes_count; ++row) {
-      for (std::size_t col = 0; col != vertexes_count; ++col) {
-        int weight = distance(row, v) + distance(v, col);
-        if (distance(row, v) != kInf and distance(v, col) != kInf and distance(row, col) > weight)
-          distance(row, col) = weight;
-        }
-      }
-    }
-  
-  return distance;
-}
-```
-
-> Написать реализацию гораздо проще, чем понять как этот алгоритм работаем, поэтому советую ознакомиться с [видео](https://www.youtube.com/watch?v=kaA3_qNfpCA)
-</spoiler>
+---
 
 ## Алгоритм Прима
-
-<spoiler title="Prim's Algorithm">
 
 ![image](https://habrastorage.org/webt/yc/pj/y_/ycpjy_pv1ho9z7gs1nphh8vzsqw.png)
 
@@ -397,70 +177,8 @@ Matrix<int> GetShortestPathsBetweenAllVertices(Graph &graph) {
 7. Пробегаясь по всем ребрам массива **tree_edges**:
 7.1. Инициализируем **spanning_tree**, добавляя в нее ребра (добавлять нужно в обе стороны, чтобы граф получился неориентированным)
 8. Возвращаем **spanning_tree**
-</spoiler>
 
-<spoiler title="Реализация на С++">
-```cpp
-Matrix<int> GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
-    const auto vertexes_count = graph.GetVertexesCount();
-
-    Matrix<int> spanning_tree(vertexes_count, vertexes_count, kInf);
-    std::set<int> visited, unvisited;
-    std::vector<Edge> tree_edges;
-
-
-    for (int v = 0; v != vertexes_count; ++v)
-        unvisited.insert(v);
-
-    {
-        // Вершина должна браться случайно, но какая разница, если дерево статичное.
-        // Дерево независимо от start_vertex всегда одинаковое
-        const auto start_vertex = static_cast<int>(vertexes_count / 2);
-        visited.insert(start_vertex);
-        unvisited.erase(start_vertex);
-    }
-
-    // Initialize Finish -> Start main loop
-
-    while (!unvisited.empty()) {
-        Edge edge(kInf, kInf, kInf);
-
-        for (const auto &from : visited) {
-            for (int to = 0; to != vertexes_count; ++to) {
-
-                bool is_unvisited_vertex = unvisited.find(to) != unvisited.end();
-                bool edge_is_exists = graph(from, to) != 0 or graph(to, from) != 0;
-
-                if (edge_is_exists and is_unvisited_vertex) {
-                    int existed_weight = graph(from, to) == 0 ? graph(to, from) : graph(from, to);
-                    bool edge_is_shorter = edge.weight > existed_weight;
-
-                    if (edge_is_shorter)
-                        edge = {from, to, existed_weight};
-                }
-            }
-        }
-
-        if (edge.weight != kInf) {
-            tree_edges.emplace_back(edge);
-            visited.insert(edge.vertex2);
-            unvisited.erase(edge.vertex2);
-        } else {
-            break;
-        }
-    }
-
-    // Initializing spanning tree
-
-    for (const auto &edge : tree_edges) {
-        spanning_tree(edge.vertex1, edge.vertex2) = edge.weight;
-        spanning_tree(edge.vertex2, edge.vertex1) = edge.weight;
-    }
-
-    return spanning_tree;
-}
-```
-</spoiler>
+---
 
 ## Для чего используют эти алгоритмы?
 
